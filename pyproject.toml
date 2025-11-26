@@ -1,0 +1,22 @@
+[project]
+name = "download-roms"
+version = "0.1.0"
+description = "A helper for downloading ROMs"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "beautifulsoup4",
+    "requests",
+    "thefuzz",
+    "python-levenshtein",
+    "rich",
+]
+
+[project.scripts]
+download-roms = "download_roms:main"
+download-rom = "download_roms:main"
+dlrom = "download_roms:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
