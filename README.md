@@ -63,45 +63,59 @@ pip install git+https://github.com/angstwad/retro-rom-downloader.git
 
 ## Usage
 
-The tool has two main commands: `download` and `rename`.
+The tool is composed of two main commands: `download` to get the ROMs, and `rename` to clean up the filenames.
 
-### `download`
+### The `top_lists` Directory
 
-This command downloads ROMs based on a list of games.
+This project includes a `top_lists` directory containing curated lists of top games for various systems (NES, SNES, Genesis, etc.). These are plain text files with one game title per line. The script is designed to read just the game names; any extra text on the line, like scores or numbers, is ignored. You can easily create your own lists in the same format.
 
-```bash
-download-rom download --games-list <path_to_games.txt> --output-dir <dir> --url <rom_url>
-```
+### Example Workflow: Downloading and Renaming a Collection
 
-**Arguments:**
+Here’s a complete workflow for downloading the top 100 Sega Genesis games and then cleaning up the filenames.
 
-* `--games-list`: A text file with one game name per line. See the `top_lists` directory for examples.
-* `--output-dir`: The directory to save the ROMs.
-* `--url`: The Myrient URL to scrape for ROMs.
-* `--region`: The preferred region (e.g., `USA`, `Europe`). Defaults to `USA`.
-* `--no-unzip`: A flag to disable automatic unzipping.
+**Step 1: Download the Collection**
 
-**Example:**
-
-This command will download the top 100 NES games to the `nes` directory.
+Use the `download` command, pointing to a game list and the corresponding URL on Myrient for that system's ROMs.
 
 ```bash
-download-rom download --games-list ./top_lists/nes-top-100.txt --output-dir nes --url 'https://myrient.erista.me/files/No-Intro/Nintendo%20-%20Nintendo%20Entertainment%20System%20(Headered)/'
+download-rom download \
+  --games-list ./top_lists/genesis-top-100.txt \
+  --output-dir ./genesis \
+  --url 'https://myrient.erista.me/files/No-Intro/Sega%20-%20Mega%20Drive%20-%20Genesis/'
 ```
 
-### `rename`
+This will:
+1.  Read the game names from `genesis-top-100.txt`.
+2.  Scan the Myrient directory for matching files for the `USA` region (the default).
+3.  Download the best-matched files into a new `genesis` directory.
+4.  Automatically unzip the downloaded archives.
 
-This command cleans up the filenames of your downloaded ROMs.
+**Step 2: Rename and Clean Up**
 
+After the download is complete, use the `rename` command on the output directory to standardize the filenames.
+
+```bash
+download-rom rename ./genesis
+```
+
+This will process all files in the `genesis` directory, renaming them from something like `Sonic the Hedgehog 2 (USA, Europe).md` to `Sonic the Hedgehog 2.md` and fixing titles like `"Aladdin (USA).md"` to `"Aladdin.md"`.
+
+### Command Reference
+
+#### `download`
+Downloads ROMs based on a list of games.
+```bash
+download-rom download --games-list <path_to_games.txt> --output-dir <dir> --url <rom_url> [options]
+```
+*   `--games-list`: A text file with one game name per line.
+*   `--output-dir`: The directory to save the ROMs.
+*   `--url`: The Myrient URL to scrape for ROMs.
+*   `--region`: The preferred region (e.g., `USA`, `Europe`). Defaults to `USA`.
+*   `--no-unzip`: A flag to disable automatic unzipping.
+
+#### `rename`
+Cleans up the filenames of your downloaded ROMs.
 ```bash
 download-rom rename <directory>
 ```
 
-**Example:**
-
-```bash
-download-rom rename ./nes
-```
-
-This will rename all files in the `nes` directory, removing tags like `(USA)` or `(Rev 1)` and cleaning up names (e.g.,
-"Zelda II, The" becomes "The Zelda II").
