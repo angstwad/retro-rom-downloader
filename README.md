@@ -35,7 +35,7 @@ brew install aria2 unzip
 
 This tool requires **Python 3.10 or higher**.
 
-### With `uv`
+### With `uv` (Recommended)
 
 First, install `uv` if you don't have it:
 
@@ -49,7 +49,7 @@ Then, install the tool from GitHub:
 uv tool install --from https://github.com/angstwad/retro-rom-downloader
 ```
 
-### With `pipx` (Recommended)
+### With `pipx`
 
 ```bash
 pipx install git+https://github.com/angstwad/retro-rom-downloader.git
@@ -103,5 +103,5 @@ download-rom rename <directory>
 download-rom rename ./nes
 ```
 
-This will rename all files in the `nes` directory, removing tags like `(USA)` or `(Rev 1)` and cleaning up names (
-e.g., "Zelda II, The" becomes "The Zelda II").
+This will rename all files in the `nes` directory, removing tags like `(USA)` or `(Rev 1)` and cleaning up names (e.g.,
+"Zelda II, The" becomes "The Zelda II").
